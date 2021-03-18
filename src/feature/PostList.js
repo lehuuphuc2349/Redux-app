@@ -1,6 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { PostAuthor } from "./PostAuthor";
 export const PostList = () => {
   const posts = useSelector((state) => state.posts);
   const renderedPosts = posts.map((post) => (
@@ -16,6 +17,7 @@ export const PostList = () => {
     <section className="posts-list">
       <h2>Posts</h2>
       {renderedPosts}
+      <PostAuthor userId={posts.user} />
     </section>
   );
 };
