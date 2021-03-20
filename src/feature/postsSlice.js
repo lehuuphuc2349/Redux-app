@@ -7,7 +7,7 @@ const initialState = [
     content: "Hello",
     user: "0",
     date: sub(new Date(), { minutes: 10 }).toISOString(),
-    reactions: "heart",
+    reactions: { thumbsUp: 9, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
   },
   {
     id: "2",
@@ -15,7 +15,7 @@ const initialState = [
     content: "World",
     user: "1",
     date: sub(new Date(), { minutes: 20 }).toISOString(),
-    reactions: "rocket",
+    reactions: { thumbsUp: 2, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
   },
   {
     id: "3",
@@ -23,7 +23,7 @@ const initialState = [
     content: "Another String",
     user: "2",
     date: sub(new Date(), { minutes: 30 }).toISOString(),
-    reactions: "eyes",
+    reactions: { thumbsUp: 0, hooray: 0, heart: 0, rocket: 0, eyes: 0 },
   },
 ];
 const postsSlice = createSlice({
@@ -32,6 +32,13 @@ const postsSlice = createSlice({
   reducers: {
     postAdded(state, action) {
       state.push(action.payload);
+    },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === postId);
+      if (existingPost) {
+        existingPost.reactions[reaction]++;
+      }
     },
     prepare(title, content, userId) {
       return {
@@ -54,5 +61,9 @@ const postsSlice = createSlice({
     },
   },
 });
-export const { postAdded, postUpdated } = postsSlice.actions;
+export const { postAdded, postUpdated, reactionAdded } = postsSlice.actions;
 export default postsSlice.reducer;
+
+export const selectAllPosts = (state) => state.posts;
+export const selectPostById = (state, postId) =>
+  state.posts.find((post) => post.id == postId);

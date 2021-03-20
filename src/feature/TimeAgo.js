@@ -11,6 +11,7 @@ export const TimeAgo = ({ timestamp }) => {
   return (
     <p>
       <span>{timeAgo}</span>
+      <h1>Hello</h1>
     </p>
   );
 };
